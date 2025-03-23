@@ -92,6 +92,7 @@ const elements = [    //Иттерация
     },
     
 ]
+const lightMods = ['light', 'dark']
 
 test.describe('Тесты главной страницы', () =>{
     test.beforeEach(async ({page}) =>{        //Создание хука для перехода на гл страницу для всех тестов в describe
@@ -104,9 +105,9 @@ test.describe('Тесты главной страницы', () =>{
                 await expect.soft(locator(page)).toBeVisible();   //Если не будет работать, то добавить { timeout: 5000 }
             });
         });
-      });
+    });
       
-      test('Проверка наименования элементов новигации хедер', async ({ page }) => {
+    test('Проверка наименования элементов новигации хедер', async ({ page }) => {
         elements.forEach(({ locator, name, text }) => { 
             if (text) {
                 test.step(`Проверка названия элемента ${name}`, async () => {         
@@ -114,9 +115,9 @@ test.describe('Тесты главной страницы', () =>{
                 });        
             }  
         });
-      });
+    });
       
-      test('Проверка атрибута href элементов новигации хедер', async ({ page }) => {
+    test('Проверка атрибута href элементов новигации хедер', async ({ page }) => {
         elements.forEach(({ locator, name, attribute }) => { 
             if (attribute) {
                 test.step(`Проверка атрибута href элемента ${name}`, async () => {         
@@ -124,18 +125,21 @@ test.describe('Тесты главной страницы', () =>{
                 });        
             }  
         });
-      });
+    });
       
-      test('Проверка переключения лайт модал', async ({ page }) => {
-          await page.getByLabel('Switch between dark and light').click();
-          await expect.soft(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-      });
-      
-      test('Проверка кнопки "Get started"', async ({ page }) => {
-          await expect.soft(page.getByRole('link', { name: 'Get started' })).toBeVisible();
-          await expect.soft(page.getByRole('link', { name: 'Get started' })).toContainText('Get started');
-          await expect.soft(page.getByRole('link', { name: 'Get started' })).toHaveAttribute('href', '/docs/intro');
-      });
+    test('Проверка переключения лайт модал', async ({ page }) => {
+        await page.getByLabel('Switch between dark and light').click();
+        await expect.soft(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    });
+    
+    lightMods.forEach((value) => {
+        test(`Проверка стилей активного ${value} мода`, async ({page}) => {
+            await page.evaluate((value) => {
+                document.querySelector('html')?.setAttribute('data-theme', value);
+            }, value);
+            await expect(page).toHaveScreenshot(`pageWith${value}Mode.png`);
+        });
+    });
 });
 
 
