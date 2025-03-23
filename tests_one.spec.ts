@@ -10,7 +10,7 @@ interface Elements {       //определяет, какие свойства �
     };
 }
 
-const elements = [    //Итерация
+const elements = [    //Иттерация
     {
         locator: (page: Page): Locator => page.getByRole('link', { name: 'Playwright logo Playwright' }), // Объявили перем елементс, которой присвоили ссылку на иттерированный объект
         name: 'Playwright logo link',
@@ -76,7 +76,21 @@ const elements = [    //Итерация
         locator: (page: Page): Locator => page.getByLabel('Search (Command+K)'), // Объявили перем елементс, которой присвоили ссылку на иттерированный объект
         name: 'Search input',    
     },
-
+    {
+        locator: (page: Page): Locator => page.getByRole('heading', { name: 'Playwright enables reliable' }), // Объявили перем елементс, которой присвоили ссылку на иттерированный объект
+        name: 'Title',  
+        text: 'Playwright enables reliable end-to-end testing for modern web apps.'
+    },
+    {
+        locator: (page: Page): Locator => page.getByRole('link', { name: 'Get started' }), // Объявили перем елементс, которой присвоили ссылку на иттерированный объект
+        name: 'Get started button',
+        text: 'Get started',
+        attribute: {
+            type: 'href',
+            value: '/docs/intro',
+        }
+    },
+    
 ]
 
 test.describe('Тесты главной страницы', () =>{
@@ -117,11 +131,6 @@ test.describe('Тесты главной страницы', () =>{
           await expect.soft(page.locator('html')).toHaveAttribute('data-theme', 'dark');
       });
       
-      test('Проверка заголовка страницы', async ({ page }) => {
-          await expect.soft(page.getByRole('heading', { name: 'Playwright enables reliable' })).toBeVisible();
-          await expect.soft(page.getByRole('heading', { name: 'Playwright enables reliable' })).toContainText('Playwright enables reliable end-to-end testing for modern web apps.');
-      });
-      
       test('Проверка кнопки "Get started"', async ({ page }) => {
           await expect.soft(page.getByRole('link', { name: 'Get started' })).toBeVisible();
           await expect.soft(page.getByRole('link', { name: 'Get started' })).toContainText('Get started');
@@ -132,3 +141,15 @@ test.describe('Тесты главной страницы', () =>{
 
 //.soft - мягкое утверждение для проверок, те если одина проверка упала, то все сл проверки все равно пройдут тест
 //.step — это метод Playwright, который позволяет логически группировать действия внутри теста и добавлять в отчёт информацию о каждом этапе
+
+/*Можем удалить данный тест тк данные выделили в elements
+test('Проверка заголовка страницы', async ({ page }) => {
+    await expect.soft(page.getByRole('heading', { name: 'Playwright enables reliable' })).toBeVisible();
+    await expect.soft(page.getByRole('heading', { name: 'Playwright enables reliable' })).toContainText('Playwright enables reliable end-to-end testing for modern web apps.');
+});*/
+/*Можем удалить данный тест тк данные выделили в elements
+est('Проверка кнопки "Get started"', async ({ page }) => {
+    await expect.soft(page.getByRole('link', { name: 'Get started' })).toBeVisible();
+    await expect.soft(page.getByRole('link', { name: 'Get started' })).toContainText('Get started');
+    await expect.soft(page.getByRole('link', { name: 'Get started' })).toHaveAttribute('href', '/docs/intro');
+});*/
