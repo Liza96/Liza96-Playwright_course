@@ -10,7 +10,7 @@ interface Elements {       //определяет, какие свойства �
     };
 }
 
-const elements = [    //Иттерация
+const elements = [    //Итерация
     {
         locator: (page: Page): Locator => page.getByRole('link', { name: 'Playwright logo Playwright' }), // Объявили перем елементс, которой присвоили ссылку на иттерированный объект
         name: 'Playwright logo link',
